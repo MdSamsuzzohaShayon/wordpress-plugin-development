@@ -32,23 +32,38 @@ function addToEndOfPost($content){
 */
 
 
+// IF WE TAKE ALL METHODS AND PROPERTIES INSIDE A CLASS THAT NEED NOT TO BE UNIQUE NAME - THIS WILL NOT CONFLICT WITH OTHER PLUGIN AND ANY WORDPRESS FUNCTION NAME
+class WordCountAndTimePlugin{
 
-// ADD MENU TO THE SETTING
-// Actions are one of the two types of Hooks. They provide a way for running a function at a specific point in the execution of WordPress Core, plugins, and themes. Callback functions for an Action do not return anything back to the calling Action hook.
-// Fires before the administration menu loads in the admin. // https://developer.wordpress.org/reference/hooks/admin_menu/
-add_action('admin_menu', 'fistUniquePluginSettingLink');
+  function __construct(){
+    // ADD MENU TO THE SETTING
+    // Actions are one of the two types of Hooks. They provide a way for running a function at a specific point in the execution of WordPress Core, plugins, and themes. Callback functions for an Action do not return anything back to the calling Action hook.
+    // Fires before the administration menu loads in the admin. // https://developer.wordpress.org/reference/hooks/admin_menu/
+    add_action('admin_menu', array($this, 'adminPage'));
+  }
 
-function fistUniquePluginSettingLink(){
-  // Add submenu page to the Settings main menu.
-  $page_title = "Word Count Settings";
-  $menu_title = "Word Count";
-  $capability = "manage_options";
-  $menu_slug = "word-count-setting";
-  add_options_page($page_title, $menu_title, $capability, $menu_slug, 'firstUniqueSettingPageHTML');
+
+
+
+  function adminPage(){
+    // Add submenu page to the Settings main menu.
+    $page_title = "Word Count Settings";
+    $menu_title = "Word Count";
+    $capability = "manage_options";
+    $menu_slug = "word-count-setting";
+    add_options_page($page_title, $menu_title, $capability, $menu_slug, array($this, 'outputHTML'));
+  }
+
+  function outputHTML(){ ?>
+    <div class="wrap">
+      <h1>Word Count Setting</h1>      
+    </div>
+  <?php }
 }
 
-function firstUniqueSettingPageHTML(){ ?>
-  Hello world from new first plugin
-<?php }
+
+$wordCountAndPlugin = new WordCountAndTimePlugin();
+
+
 
  ?>
