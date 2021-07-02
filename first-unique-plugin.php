@@ -40,7 +40,29 @@ class WordCountAndTimePlugin{
     // Actions are one of the two types of Hooks. They provide a way for running a function at a specific point in the execution of WordPress Core, plugins, and themes. Callback functions for an Action do not return anything back to the calling Action hook.
     // Fires before the administration menu loads in the admin. // https://developer.wordpress.org/reference/hooks/admin_menu/
     add_action('admin_menu', array($this, 'adminPage'));
+    add_action('admin_init', array($this, 'settings')); // The Settings API, added in WordPress 2.7, allows admin pages containing settings forms to be managed semi-automatically. It lets you define settings pages, sections within those pages and fields within the sections.
   }
+
+
+// REGISTER THE SETTING WHICH WE WANT TO SAVE INTO THE DATABASE
+  function settings(){
+    $insideLabel = 'Display Location';
+    $page_slug = "word-count-setting";
+    $page_section = 'wcp_first_section';
+
+
+    $option_group = "wordcountplugin";
+    $option_name= "wcp_location";
+    $args = array("sanitize_callback" => "sanitize_text_field", 'default' => "0") ; // Sanitizes a string from user input or from the database.
+    add_settings_section($page_section, null, null, $page_slug);
+    // Part of the Settings API. Use this to define a settings field that will show as part of a settings section inside a settings page.
+    add_settings_field($option_name, $insideLabel, array($this, "locationHTML"), $page_slug, $page_section );
+    register_setting($option_group, $option_name, $args); // Registers a setting and its data.
+  }
+
+  function locationHTML(){ // FUNCTION FOR OUTPUTING CUSTOM HTML ?>
+    Hello
+  <?php }
 
 
 
@@ -56,7 +78,13 @@ class WordCountAndTimePlugin{
 
   function outputHTML(){ ?>
     <div class="wrap">
-      <h1>Word Count Setting</h1>      
+      <h1>Word Count Setting</h1>
+      <form action="options.php" method="post">
+        <?php
+        do_settings_sections('word-count-setting');
+        submit_button();
+         ?>
+      </form>
     </div>
   <?php }
 }

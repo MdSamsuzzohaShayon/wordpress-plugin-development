@@ -7,4 +7,5 @@
  - After setup headers activate the plugin
  - Check [all filters](https://codex.wordpress.org/Plugin_API/Filter_Reference)
  - Check [all actions](https://codex.wordpress.org/Plugin_API/Action_Reference)
+ - WordPress [settings API](https://codex.wordpress.org/Settings_API)
  - [Conditional functions](https://developer.wordpress.org/themes/basics/conditional-tags/)
